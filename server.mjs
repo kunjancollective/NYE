@@ -5,6 +5,7 @@ import { resolve, basename } from "node:path";
 import { randomBytes, timingSafeEqual, createHmac } from "node:crypto";
 import { DatabaseSync } from "node:sqlite";
 import { events, phase, calendar } from "./events.mjs";
+import { collection, allowedMedia } from "./media.mjs";
 const preview = process.env.PREVIEW === "1",
   port = Number(process.env.PORT || 3000),
   origin = process.env.APP_ORIGIN || `http://localhost:${port}`;
@@ -34,6 +35,7 @@ const lifecycle = () =>
       ? Date.parse(process.env.PREVIEW_TIME)
       : Date.now(),
   );
+const mediaRoot = resolve(process.env.MEDIA_DIR || "private-media");
 const secret = process.env.SESSION_SECRET || randomBytes(32).toString("hex");
 await mkdir(".data", { recursive: true });
 const db = new DatabaseSync(process.env.DB_PATH || ".data/event.sqlite");
@@ -307,20 +309,21 @@ http
       if (path === "/api/media") {
         let files = [];
         try {
-          files = (await readdir("private-media")).filter((x) =>
-            /^[\w.-]+\.(jpg|png|webp|mp4|webm)$/i.test(x),
-          );
+          files = await readdir(mediaRoot);
         } catch {}
-        return send(200, { files });
+        return send(200, {
+          items: collection.filter((item) => files.includes(item.file)),
+        });
       }
       if (path.startsWith("/media/")) {
         const file = path.slice(7);
         if (
+          !allowedMedia.has(file) ||
           file !== basename(file) ||
           !/^[\w.-]+\.(jpg|png|webp|mp4|webm)$/i.test(file)
         )
           return send(404, { error: "Not found" });
-        const full = resolve("private-media", file),
+        const full = resolve(mediaRoot, file),
           info = await stat(full);
         if (!info.isFile()) return send(404, { error: "Not found" });
         const type = types[file.slice(file.lastIndexOf(".")).toLowerCase()];

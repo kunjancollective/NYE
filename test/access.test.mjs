@@ -1,17 +1,22 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
-import { mkdtemp, rm } from "node:fs/promises";
+import { mkdtemp, rm, mkdir, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 test("server access, private inbox, feedback gate, and staged edits", async () => {
   const dir = await mkdtemp(join(tmpdir(), "nye-test-"));
+  const mediaDir = join(dir, "media");
+  await mkdir(mediaDir);
+  await writeFile(join(mediaDir, "beach-session.mp4"), "test-video-bytes");
+  await writeFile(join(mediaDir, "unapproved.jpg"), "private-original");
   const port = 3198,
     origin = `http://localhost:${port}`;
   const child = spawn(process.execPath, ["server.mjs"], {
     env: {
       ...process.env,
       PREVIEW: "1",
+      MEDIA_DIR: mediaDir,
       PREVIEW_TIME: "2026-10-12T12:00:00Z",
       PORT: String(port),
       APP_ORIGIN: origin,
@@ -56,6 +61,22 @@ test("server access, private inbox, feedback gate, and staged edits", async () =
       guest = g.headers.get("set-cookie").split(";")[0];
     assert.match(g.headers.get("set-cookie"), /HttpOnly/);
     assert.equal((await request("/api/admin", null, guest)).status, 403);
+    const media = await (await request("/api/media", null, guest)).json();
+    assert.equal(media.items.length, 1);
+    assert.equal(media.items[0].file, "beach-session.mp4");
+    assert.equal(
+      (await request("/media/unapproved.jpg", null, guest)).status,
+      404,
+    );
+    const range = await fetch(origin + "/media/beach-session.mp4", {
+      headers: { Cookie: guest, Range: "bytes=0-3" },
+    });
+    assert.equal(range.status, 206);
+    assert.equal(await range.text(), "test");
+    const badRange = await fetch(origin + "/media/beach-session.mp4", {
+      headers: { Cookie: guest, Range: "bytes=100-200" },
+    });
+    assert.equal(badRange.status, 416);
     assert.equal((await request("/api/report", null, guest)).status, 403);
     assert.equal(
       (await request("/api/manage", { action: "approve" }, guest)).status,

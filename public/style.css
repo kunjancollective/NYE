@@ -756,3 +756,476 @@ dialog::backdrop {
     margin-left: auto;
   }
 }
+/* The Los Cabos chapter: editorial scale, sea-blue depth and a warm horizon. */
+:root {
+  --ink: #183d49;
+  --muted: #52686c;
+  --orange: #a95132;
+  --paper: #f4f0e6;
+  --line: #c8d1c9;
+}
+.hero-title {
+  position: relative;
+  margin-top: 32px;
+}
+.edition {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 3px;
+  margin-bottom: 20px;
+}
+.hero h1 {
+  font-size: clamp(74px, 9.3vw, 134px);
+  line-height: 0.99;
+  letter-spacing: -5px;
+  margin: 0 0 35px;
+  position: relative;
+  z-index: 1;
+}
+.hero-year {
+  position: absolute;
+  right: 0;
+  bottom: -8px;
+  font: italic 250px/0.8 var(--serif);
+  color: #d9dfd4;
+  letter-spacing: -22px;
+  z-index: 0;
+}
+.hero-copy {
+  position: relative;
+  z-index: 1;
+}
+.hero-image {
+  height: 450px;
+  background: #164e5b;
+  isolation: isolate;
+}
+.hero-image:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(transparent 30%, #052d45b3);
+  z-index: 0;
+}
+.hero-image img {
+  filter: none;
+  object-position: center 65%;
+  animation: none;
+}
+.image-caption {
+  z-index: 1;
+  bottom: 32px;
+  left: 34px;
+}
+.image-caption strong {
+  display: block;
+  font: normal 37px/1.12 var(--serif);
+  letter-spacing: -0.5px;
+  margin-top: 10px;
+}
+.image-label {
+  z-index: 1;
+}
+.hero-explore {
+  position: absolute;
+  right: 30px;
+  bottom: 34px;
+  color: white;
+  z-index: 1;
+  text-decoration: none;
+  font-size: 12px;
+  border-bottom: 1px solid #ffffff80;
+  padding-bottom: 8px;
+}
+.tide-lines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1;
+  opacity: 0.4;
+}
+.tide-lines span {
+  position: absolute;
+  left: -20%;
+  bottom: -150px;
+  width: 140%;
+  height: 250px;
+  border: 1px solid #e8e9ce;
+  border-radius: 50%;
+  animation: tide 13s ease-in-out infinite alternate;
+}
+.tide-lines span:nth-child(2) {
+  bottom: -165px;
+  animation-delay: -4s;
+}
+.tide-lines span:nth-child(3) {
+  bottom: -180px;
+  animation-delay: -7s;
+}
+@keyframes tide {
+  to {
+    transform: translateY(-15px) rotate(-2deg);
+  }
+}
+.chapter-intro {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  margin-top: 36px;
+  padding-top: 22px;
+  border-top: 1px solid var(--line);
+}
+.chapter-intro p {
+  font: italic 27px var(--serif);
+  margin: 0;
+  color: var(--ink);
+}
+.chapter-intro .eyebrow {
+  white-space: nowrap;
+  color: var(--orange);
+}
+.night-chapter .event-card {
+  background: #112e41;
+  color: #f2e9d6;
+  border-color: #112e41;
+}
+.night-chapter .event-date {
+  background: #203b49;
+}
+.night-chapter .event-card p,
+.night-chapter .event-card .fine {
+  color: #d1dcd9;
+}
+.night-chapter .event-actions {
+  border-color: #59717b;
+}
+.night-chapter .event-actions button,
+.night-chapter .event-actions a {
+  border-color: #c4b896;
+  color: #f2e9d6;
+}
+.night-chapter .event-actions .primary {
+  background: #e9d9b7;
+  color: #183d49;
+}
+.night-chapter .tag {
+  color: #e8bd79;
+}
+.booth-photo {
+  margin: 28px 0 20px;
+}
+.booth-photo img {
+  display: block;
+  width: 100%;
+  height: 235px;
+  object-fit: cover;
+  object-position: 50% 45%;
+}
+.booth-photo figcaption {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.8px;
+  margin-top: 10px;
+}
+.request {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: #173e4a;
+}
+.request h2 {
+  font-size: clamp(42px, 5vw, 65px);
+  line-height: 1;
+}
+.request:after {
+  content: "↗";
+  font: normal 240px var(--serif);
+  position: absolute;
+  right: -30px;
+  bottom: -55px;
+  opacity: 0.07;
+  pointer-events: none;
+}
+.request button {
+  align-self: start;
+}
+.artists {
+  gap: 35px;
+}
+.midnight-section {
+  background: #112b3e;
+  color: #f5e9d1;
+  padding: 70px 65px;
+  margin: 75px 0 0;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.midnight-section h2 {
+  font-size: clamp(46px, 5.5vw, 74px);
+  max-width: 700px;
+  margin: 24px 0;
+}
+.midnight-section h2 em {
+  color: #ddb681;
+}
+.midnight-section p {
+  color: #b9cbce;
+  position: relative;
+  z-index: 1;
+}
+.midnight-section .eyebrow {
+  color: #d5ba8d;
+}
+.midnight-section button {
+  color: #f5e9d1;
+  border-color: #84959b;
+  position: relative;
+  z-index: 1;
+  margin-top: 15px;
+}
+.midnight-section button:hover {
+  background: #294354;
+}
+.countdown {
+  display: flex;
+  gap: 34px;
+  margin: 32px 0;
+}
+.countdown div {
+  min-width: 72px;
+}
+.countdown strong {
+  display: block;
+  font: normal 52px/1.1 var(--serif);
+}
+.countdown span {
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #b9cbce;
+}
+.midnight-orbit {
+  width: 500px;
+  height: 500px;
+  border: 1px solid #bbaa7855;
+  border-radius: 50%;
+  position: absolute;
+  right: -220px;
+  top: 80px;
+  box-shadow:
+    0 0 0 35px #112b3e,
+    0 0 0 36px #bbaa7833,
+    0 0 0 75px #112b3e,
+    0 0 0 76px #bbaa7822;
+  z-index: -1;
+}
+.gallery {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 38px 24px;
+}
+.memory-card {
+  display: block;
+  padding: 0;
+  border: 0;
+  text-align: left;
+  min-width: 0;
+  align-self: start;
+  background: none;
+}
+.memory-card:hover {
+  background: none;
+}
+.memory-image {
+  position: relative;
+  overflow: hidden;
+  background: #cdd8d2;
+}
+.memory-image img {
+  display: block;
+  width: 100%;
+  height: 290px;
+  max-height: none;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+.memory-card:hover img {
+  transform: scale(1.035);
+}
+.memory-open {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  padding: 8px 12px;
+  background: #f4f0e6e8;
+  font-size: 9px;
+  letter-spacing: 1px;
+}
+.memory-caption {
+  display: block;
+  padding: 18px 0;
+}
+.memory-caption .eyebrow {
+  font-size: 9px;
+  color: var(--muted);
+}
+.memory-caption strong {
+  display: block;
+  font: normal 29px var(--serif);
+  margin-top: 7px;
+}
+.memory-0 {
+  grid-column: 1/-1;
+}
+.memory-0 .memory-image img {
+  height: 360px;
+}
+.memory-2 .memory-image img {
+  object-position: 50% 40%;
+}
+.media-dialog {
+  width: min(1080px, calc(100% - 32px));
+  padding: 25px;
+}
+.lightbox img,
+.lightbox video {
+  display: block;
+  width: 100%;
+  max-height: 65vh;
+  object-fit: contain;
+  background: #102f3b;
+}
+.lightbox h2 {
+  font-size: 32px;
+}
+.lightbox p {
+  font-size: 12px;
+}
+.quiet-moment {
+  text-align: center;
+  padding: 35px 0;
+}
+.breath-ring {
+  width: 130px;
+  height: 130px;
+  border: 1px solid #788e83;
+  border-radius: 50%;
+  margin: 38px auto;
+  box-shadow: 0 0 0 18px #e8e9dc;
+  animation: breathe 7s ease-in-out infinite;
+}
+.quiet-moment h2 {
+  font-size: 62px;
+}
+@media (max-width: 760px) {
+  .hero-title {
+    margin-top: 25px;
+  }
+  .hero h1 {
+    font-size: clamp(56px, 10.6vw, 80px);
+    letter-spacing: -2.8px;
+    line-height: 1.04;
+    margin-bottom: 25px;
+  }
+  .hero-year {
+    font-size: 140px;
+    right: 8px;
+    bottom: 0;
+    opacity: 0.5;
+    letter-spacing: -12px;
+  }
+  .edition {
+    font-size: 8px;
+    letter-spacing: 1.7px;
+  }
+  .hero-image {
+    height: 420px;
+  }
+  .hero-image img {
+    object-position: 50% center;
+  }
+  .image-caption {
+    left: 23px;
+    bottom: 78px;
+  }
+  .image-caption strong {
+    font-size: 31px;
+  }
+  .hero-explore {
+    left: 23px;
+    right: auto;
+    bottom: 25px;
+  }
+  .chapter-intro {
+    display: block;
+    margin-top: 24px;
+  }
+  .chapter-intro p {
+    font-size: 25px;
+    margin-top: 12px;
+  }
+  .midnight-section {
+    padding: 38px 25px;
+    margin-top: 40px;
+  }
+  .midnight-section h2 {
+    font-size: 44px;
+  }
+  .countdown {
+    gap: 25px;
+  }
+  .countdown strong {
+    font-size: 46px;
+  }
+  .midnight-orbit {
+    right: -380px;
+  }
+  .gallery {
+    gap: 22px;
+    grid-template-columns: 1fr;
+  }
+  .memory-0 {
+    grid-column: auto;
+  }
+  .memory-image img,
+  .memory-0 .memory-image img {
+    height: 250px;
+  }
+  .memory-caption strong {
+    font-size: 28px;
+  }
+  .booth-photo img {
+    height: 230px;
+  }
+  .request h2 {
+    font-size: 48px;
+  }
+  .hero-copy p {
+    max-width: 280px;
+  }
+  .media-dialog {
+    padding: 18px;
+  }
+  .lightbox h2 {
+    font-size: 27px;
+  }
+  .hero-top .eyebrow,
+  .status {
+    font-size: 9px;
+    letter-spacing: 1.4px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .memory-image img {
+    transition: none;
+  }
+}
+@media (max-width: 760px) {
+  .event-date .eyebrow {
+    font-size: 8px;
+    letter-spacing: 1px;
+  }
+}

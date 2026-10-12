@@ -4,6 +4,16 @@ const $ = (s) => document.querySelector(s),
 let state,
   session,
   selected = 0;
+let countdownTimer;
+const chapters = [
+  "First light, first notes.",
+  "Find your own rhythm.",
+  "A little closer to the sea.",
+  "One more golden afternoon.",
+  "Meet us at the edge of a new year.",
+  "Begin on a beautiful note.",
+  "One last dance with the tide.",
+];
 const esc = (s) =>
   String(s).replace(
     /[&<>"']/g,
@@ -75,7 +85,8 @@ async function boot() {
   render();
 }
 function render() {
-  app.innerHTML = `${session.preview ? '<div class="preview">LOCAL REVIEW · Event details and media subject to management approval</div>' : ""}<div class="wrap"><header><a href="#" class="wordmark" aria-label="Kunjan Collective home">kunjan collective<small>COLLECTED MUSIC INTELLIGENCE</small></a><nav aria-label="Main navigation"><a href="#programme">The programme</a><a href="#experience">The experience</a><a href="#memories">The memories</a>${session.role === "admin" ? '<button id="management">Management ↗</button>' : ""}<button id="logout">Sign out</button></nav></header><main id="main"><section class="hero"><div class="hero-top"><span class="eyebrow">Paradisus Los Cabos · México</span><span class="status"><i class="dot"></i>${state.phase === "archive" ? "The 2026–27 archive" : "Your private guest guide"}</span></div><h1>Drift into <em>2027.</em></h1><div class="hero-copy"><p>Salt in the air. Strings over a beautiful beat.<br>Seven days together, and a new year to feel.</p><a class="button primary" href="#programme">Find your next moment <span>↓</span></a></div><div class="hero-image"><img src="/coast.jpg" alt="An original aerial photograph from the Kunjan Collective archive"><span class="image-label">27 DEC 2026 — 02 JAN 2027</span><span class="image-caption">THE COLLECTIVE ARCHIVE / ORIGINAL PHOTOGRAPHY</span></div><div class="ribbon"><span>KUNJAN COLLECTIVE × PARADISUS LOS CABOS</span><span>DJ + LIVE VIOLIN</span><span>ALL TIMES · LOS CABOS</span></div></section><section class="section" id="programme"><div class="section-head"><div><span class="eyebrow">01 / Be in the right place</span><h2>A week worth tuning into.</h2></div><p>Find us here, every day. Save your favourite sessions and let the music find you.</p></div>${state.phase === "archive" ? "<p>This chapter is complete. Explore the programme and memories below. Attendance, requests and feedback are now closed.</p>" : ""}<div class="days" role="group" aria-label="Choose a date">${state.events.map((e, i) => `<button class="day ${i === 4 ? "nye" : ""}" data-day="${i}" aria-pressed="${i === selected}"><span>${fmt(e, { weekday: "short" })}</span><strong>${fmt(e, { day: "numeric" })}</strong><span>${fmt(e, { month: "short" })}${i === 4 ? " ✦" : ""}</span></button>`).join("")}</div><div id="event"></div><p class="fine">Calendar reminders include a one-hour alert. Import the file and enable notifications in your calendar; delivery depends on your calendar settings. No SMS or email reminders are active.</p></section><section class="section duo" id="experience"><div><span class="eyebrow">02 / A little less ordinary</span><p class="statement">A conversation between<br>the beat and the bow.</p><p>Kunjan shapes the journey. Nyke Van Wyk brings the strings to life. Together, a sound that moves with the afternoon — and with you.</p><div class="artists"><div>Kunjan<span>DJ / Musical direction</span></div><div>Nyke Van Wyk<span>Live violin</span></div></div><button id="moment">Take a moment <span>↗</span></button></div><div class="request"><span class="eyebrow">Your note to the DJ</span><h2>What's your<br>kind of beautiful?</h2><p>There’s a carefully curated experience unfolding. Share a song you love; if it fits the moment, it just might find its way into the set.</p><button id="request" ${state.phase === "archive" ? "disabled" : ""}>Request a song <span>↗</span></button><p class="fine">Delivered to our private DJ inbox. Requests are suggestions, not guaranteed plays.</p></div></section><section class="section" id="memories"><div class="section-head"><div><span class="eyebrow">03 / Keep the feeling</span><h2>Some moments stay.</h2></div><p>A private collection of our time by the sea. Approved films and photographs will appear here.</p></div><div class="gallery" id="gallery"><div class="gallery-card"><span class="symbol">↗</span><div><h3>From the air.</h3><p>Original aerials · Awaiting event selection</p></div></div><div class="gallery-card"><span class="symbol">▷</span><div><h3>In the moment.</h3><p>Performance films · Coming after review</p></div></div><div class="gallery-card"><span class="symbol">✦</span><div><h3>Into the night.</h3><p>NYE memories · A chapter to come</p></div></div></div></section><section class="section section-head"><div><span class="eyebrow">04 / Your experience matters</span><h2>Tell us how it felt.</h2><p>Help shape the next experience. Anonymous feedback informs a report for Meliá corporate.</p></div><div><button id="feedback" ${state.phase !== "live" ? "disabled" : ""}>Share your experience ↗</button><p class="fine">${state.phase === "archive" ? "Feedback is now closed." : "Open December 27 – January 2, Los Cabos time."}</p></div></section><div id="admin"></div></main><footer class="footer"><div class="wordmark">kunjan collective<small>INTO 2027 / LOS CABOS</small></div><div><p>An independently operated Kunjan Collective event guide for performances at Paradisus Los Cabos. Partner names identify the collaboration; this site is not owned or operated by Meliá.</p><button id="privacy">Privacy & access</button></div></footer></div><nav class="mobile-nav" aria-label="Quick links"><a href="#programme">Programme</a><a href="#experience">Request a song</a><a href="#memories">Memories</a></nav>`;
+  clearInterval(countdownTimer);
+  app.innerHTML = `${session.preview ? '<div class="preview">LOCAL REVIEW · Event details and media subject to management approval</div>' : ""}<div class="wrap"><header><a href="#" class="wordmark" aria-label="Kunjan Collective home">kunjan collective<small>COLLECTED MUSIC INTELLIGENCE</small></a><nav aria-label="Main navigation"><a href="#programme">The programme</a><a href="#experience">The experience</a><a href="#memories">The memories</a>${session.role === "admin" ? '<button id="management">Management ↗</button>' : ""}<button id="logout">Sign out</button></nav></header><main id="main"><section class="hero"><div class="hero-top"><span class="eyebrow">Paradisus Los Cabos · México</span><span class="status"><i class="dot"></i>${state.phase === "archive" ? "The 2026–27 archive" : "Your private guest guide"}</span></div><div class="hero-title"><span class="edition">THE LOS CABOS CHAPTER / 2026—27</span><h1>Between the beat<br>&amp; <em>the tide.</em></h1><span class="hero-year" aria-hidden="true">27</span></div><div class="hero-copy"><p>A DJ. A violin. An ocean of possibility.<br>Your seven-day passage into 2027.</p><a class="button primary" href="#programme">Find your next moment <span>↓</span></a></div><div class="hero-image"><img id="hero-photo" hidden alt=""><div class="tide-lines" aria-hidden="true"><span></span><span></span><span></span></div><span class="image-label">27 DEC 2026 — 02 JAN 2027</span><div class="image-caption"><span class="eyebrow">Baja California Sur</span><strong>Wish you were here?<br>You already are.</strong></div><a class="hero-explore" href="#memories">Explore the private collection ↗</a></div><div class="ribbon"><span>KUNJAN COLLECTIVE × PARADISUS LOS CABOS</span><span>DJ + LIVE VIOLIN</span><span>ALL TIMES · LOS CABOS</span></div></section><section class="section" id="programme"><div class="section-head"><div><span class="eyebrow">01 / Be in the right place</span><h2>Seven days. Seven chapters.</h2></div><p>Find us here, every day. Save your favourite sessions and let the music find you.</p></div>${state.phase === "archive" ? "<p>This chapter is complete. Explore the programme and memories below. Attendance, requests and feedback are now closed.</p>" : ""}<div class="chapter-intro"><span class="eyebrow" id="chapter-number"></span><p id="chapter-title"></p></div><div class="days" role="group" aria-label="Choose a date">${state.events.map((e, i) => `<button class="day ${i === 4 ? "nye" : ""}" data-day="${i}" aria-pressed="${i === selected}"><span>${fmt(e, { weekday: "short" })}</span><strong>${fmt(e, { day: "numeric" })}</strong><span>${fmt(e, { month: "short" })}${i === 4 ? " ✦" : ""}</span></button>`).join("")}</div><div id="event"></div><p class="fine">Calendar reminders include a one-hour alert. Import the file and enable notifications in your calendar; delivery depends on your calendar settings. No SMS or email reminders are active.</p></section><section class="section duo" id="experience"><div><span class="eyebrow">02 / A little less ordinary</span><p class="statement">A conversation between<br>the beat and the bow.</p><p>Kunjan shapes the journey. Nyke Van Wyk brings the strings to life. Together, a sound that moves with the afternoon — and with you.</p><div class="artists"><div>Kunjan<span>DJ / Musical direction</span></div><div>Nyke Van Wyk<span>Live violin</span></div></div><figure class="booth-photo" id="booth-photo" hidden></figure><button id="moment">Take a moment <span>↗</span></button></div><div class="request"><span class="eyebrow">A note to the booth</span><h2>A song.<br>A feeling.<br>A possibility.</h2><p>There’s a carefully curated experience unfolding. Share a song you love; if it fits the moment, it just might find its way into the set.</p><button id="request" ${state.phase === "archive" ? "disabled" : ""}>Request a song <span>↗</span></button><p class="fine">Delivered to our private DJ inbox. Requests are suggestions, not guaranteed plays.</p></div></section><section class="midnight-section"><span class="eyebrow">December 31 / The midnight chapter</span><h2>The last sunset.<br>The first <em>everything.</em></h2><p>One shoreline. A thousand possibilities.<br>Meet us on the beach as a new year begins.</p><div class="countdown" id="countdown" aria-label="Time until New Year in Los Cabos"></div><p class="fine">Counting down to January 1, 2027, 12:00 AM in Los Cabos.<br>Performance start time is still awaiting confirmation.</p><button id="nye-chapter">Explore December 31 ↗</button><span class="midnight-orbit" aria-hidden="true"></span></section><section class="section" id="memories"><div class="section-head"><div><span class="eyebrow">03 / Keep the feeling</span><h2>Some moments stay.</h2></div><p>From above, from the booth, from the moments in between. Original photographs and film from our Los Cabos archive.</p></div><div class="gallery" id="gallery"><div class="gallery-card"><span class="symbol">↗</span><div><h3>From the air.</h3><p>Original aerials · Awaiting event selection</p></div></div><div class="gallery-card"><span class="symbol">▷</span><div><h3>In the moment.</h3><p>Performance films · Coming after review</p></div></div><div class="gallery-card"><span class="symbol">✦</span><div><h3>Into the night.</h3><p>NYE memories · A chapter to come</p></div></div></div></section><section class="section section-head"><div><span class="eyebrow">04 / Your experience matters</span><h2>Tell us how it felt.</h2><p>Help shape the next experience. Anonymous feedback informs a report for Meliá corporate.</p></div><div><button id="feedback" ${state.phase !== "live" ? "disabled" : ""}>Share your experience ↗</button><p class="fine">${state.phase === "archive" ? "Feedback is now closed." : "Open December 27 – January 2, Los Cabos time."}</p></div></section><div id="admin"></div></main><footer class="footer"><div class="wordmark">kunjan collective<small>INTO 2027 / LOS CABOS</small></div><div><p>An independently operated Kunjan Collective event guide for performances at Paradisus Los Cabos. Partner names identify the collaboration; this site is not owned or operated by Meliá.</p><button id="privacy">Privacy & access</button></div></footer></div><nav class="mobile-nav" aria-label="Quick links"><a href="#programme">Programme</a><a href="#experience">Request a song</a><a href="#memories">Memories</a></nav>`;
   $("#logout").onclick = async () => {
     await api("/api/logout", {});
     boot();
@@ -91,25 +102,18 @@ function render() {
       }),
   );
   renderEvent();
+  $("#nye-chapter").onclick = () => {
+    document.querySelector('[data-day="4"]').click();
+    $("#programme").scrollIntoView({ behavior: "smooth" });
+  };
+  updateCountdown();
+  countdownTimer = setInterval(updateCountdown, 60000);
   $("#request").onclick = song;
   $("#feedback").onclick = feedback;
   $("#moment").onclick = () => {
-    const d = document.createElement("div");
-    d.className = "ambient";
-    d.innerHTML =
-      '<span class="eyebrow">A pause before the next beat</span><h2>Be here.</h2><p>Watch the horizon. Take a breath.<br>The next moment is yours.</p><button>Back to the experience</button><small>A silent visual interlude · No audio playback</small>';
-    document.body.append(d);
-    const close = () => {
-        d.remove();
-        document.removeEventListener("keydown", key);
-        $("#moment").focus();
-      },
-      key = (e) => {
-        if (e.key === "Escape") close();
-      };
-    d.querySelector("button").onclick = close;
-    d.querySelector("button").focus();
-    document.addEventListener("keydown", key);
+    modal(
+      `<div class="quiet-moment"><span class="eyebrow">A pause before the next beat</span><h2>Be here.</h2><p>Watch the horizon. Take a breath.<br>The next moment is yours.</p><div class="breath-ring" aria-hidden="true"></div><p class="fine">A silent visual interlude. Stay as long as you like.</p></div>`,
+    );
   };
   $("#privacy").onclick = () =>
     modal(
@@ -119,6 +123,9 @@ function render() {
   loadMedia();
 }
 function renderEvent() {
+  $("#chapter-number").textContent = `CHAPTER 0${selected + 1} / 07`;
+  $("#chapter-title").textContent = chapters[selected];
+  $("#programme").classList.toggle("night-chapter", selected === 4);
   const e = state.events[selected],
     att = state.attendance.includes(e.id);
   $("#event").innerHTML =
@@ -190,20 +197,70 @@ function feedback() {
     }
   };
 }
+function updateCountdown() {
+  const target = Date.parse("2027-01-01T00:00:00-07:00");
+  const minutes = Math.max(0, Math.ceil((target - Date.now()) / 60000));
+  const el = $("#countdown");
+  if (!el) return;
+  if (!minutes) {
+    el.innerHTML = "<strong>Hello, 2027.</strong>";
+    return;
+  }
+  el.innerHTML = [
+    [Math.floor(minutes / 1440), "days"],
+    [Math.floor((minutes % 1440) / 60), "hours"],
+    [minutes % 60, "minutes"],
+  ]
+    .map(
+      ([n, label]) =>
+        `<div><strong>${String(n).padStart(2, "0")}</strong><span>${label}</span></div>`,
+    )
+    .join("");
+}
 async function loadMedia() {
   try {
-    const { files } = await api("/api/media");
-    if (files.length)
-      $("#gallery").innerHTML = files
+    const { items } = await api("/api/media");
+    const hero = items.find((x) => x.role === "hero");
+    if (hero) {
+      const img = $("#hero-photo");
+      img.src = "/media/" + hero.file;
+      img.alt = hero.alt;
+      img.hidden = false;
+    }
+    const booth = items.find((x) => x.file === "booth-detail.webp");
+    if (booth) {
+      $("#booth-photo").hidden = false;
+      $("#booth-photo").innerHTML =
+        `<img src="/media/${booth.file}" alt="${esc(booth.alt)}" loading="lazy"><figcaption>Behind the sound / Kunjan Collective</figcaption>`;
+    }
+    if (items.length) {
+      $("#gallery").innerHTML = items
+        .filter((x) => x.role !== "hero")
         .map(
-          (f) =>
-            `<figure>${/\.(mp4|webm)$/i.test(f) ? `<video controls preload="metadata" src="/media/${encodeURIComponent(f)}"></video>` : `<img loading="lazy" src="/media/${encodeURIComponent(f)}" alt="${esc(f.replace(/[-_]/g, " "))}">`}<figcaption>${esc(f)}</figcaption></figure>`,
+          (item, i) =>
+            `<button class="memory-card memory-${i}" data-memory="${i}" aria-label="${item.type === "video" ? "Play film:" : "View photograph:"} ${esc(item.title)}"><div class="memory-image"><img loading="lazy" src="/media/${esc(item.poster || item.file)}" alt="${esc(item.alt)}"><span class="memory-open">${item.type === "video" ? "▷ PLAY FILM" : "↗ VIEW"}</span></div><span class="memory-caption"><span class="eyebrow">${esc(item.subtitle)}</span><strong>${esc(item.title)}</strong></span></button>`,
         )
         .join("");
+      const visible = items.filter((x) => x.role !== "hero");
+      document.querySelectorAll("[data-memory]").forEach(
+        (b) =>
+          (b.onclick = () => {
+            const item = visible[Number(b.dataset.memory)];
+            dialog.classList.add("media-dialog");
+            modal(
+              `<div class="lightbox"><span class="eyebrow">The private Los Cabos collection</span><h2>${esc(item.title)}</h2>${item.type === "video" ? `<video controls playsinline preload="metadata" poster="/media/${esc(item.poster)}" aria-label="${esc(item.alt)}"><source src="/media/${esc(item.file)}" type="video/mp4"></video>` : `<img src="/media/${esc(item.file)}" alt="${esc(item.alt)}">`}<p>${esc(item.subtitle)} · Original Kunjan Collective archive</p></div>`,
+            );
+          }),
+      );
+    }
   } catch {
     notice("The gallery is temporarily unavailable.");
   }
 }
+dialog.addEventListener("close", () => {
+  dialog.querySelectorAll("video").forEach((v) => v.pause());
+  dialog.classList.remove("media-dialog");
+});
 async function management() {
   try {
     const d = await api("/api/admin");
