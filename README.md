@@ -59,8 +59,6 @@ The local `NYE-private-media.zip` deliverable contains five WebP photographs, on
 
 Source mapping: DJI_0426 → coastline.webp; DJI_0451 → resort-panorama.webp; DJI_0452 → resort-detail.webp; DJI_0449 → horizon.webp; IMG_9566 → booth-detail.webp; IMG_9555 → beach-session.mp4 and beach-session.webp. The film depicts a beach moment with passing horses, not a music performance. It starts only on user action; sound is controlled by the player. Source images and the original MOV remain local outside the checkout in work/media-originals.
 
-## Panoramic immersion
+## 360° experience — on hold
 
-An optional “Look around Los Cabos” entrance sits between the hero and programme. The protected viewer supports native touch scrolling, mouse dragging, keyboard arrows, directional controls and a direct return to the programme. It respects reduced motion and does not request gyroscope access or autoplay movement.
-
-The supplied Photos derivative is 1538 × 511 with no GPano projection metadata. It is presented as a bounded panorama, not stretched or wrapped into a false sphere. A full spherical/equirectangular export is needed to implement true 360° viewing. The metadata-stripped immersive-panorama.webp stays in the private media volume and separate local media package, not GitHub. Browser review verified navigation, phone layout and return focus to the selected programme date.
+The panoramic preview and its entry/viewer have been removed at the owner's request. The supplied file is retained locally outside the served media directory while the correct 360° asset is located. It is not included in the private deployment media package. The rest of the creative experience is unchanged.
