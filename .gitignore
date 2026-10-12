@@ -1,0 +1,5 @@
+.env
+.data/
+private-media/
+node_modules/
+.DS_Store
