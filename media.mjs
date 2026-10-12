@@ -1,6 +1,14 @@
 // Files live in an untracked private-media volume, never in the public repository.
 export const collection = [
   {
+    file: "immersive-panorama.webp",
+    title: "Take the long way around.",
+    subtitle: "Los Cabos / Panoramic exploration",
+    alt: "Panoramic aerial view across the desert, golf course and coastline on both sides",
+    role: "panorama",
+    type: "image",
+  },
+  {
     file: "coastline.webp",
     title: "Where the desert meets the sea.",
     subtitle: "Los Cabos / From above",

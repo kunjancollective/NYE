@@ -1229,3 +1229,99 @@ dialog::backdrop {
     letter-spacing: 1px;
   }
 }
+.immersive-entry {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+  padding: 38px 0;
+  border-bottom: 1px solid var(--line);
+}
+.immersive-entry[hidden] {
+  display: none;
+}
+.immersive-entry h2 {
+  font-size: 36px;
+  margin: 12px 0;
+}
+.immersive-entry p {
+  font-size: 13px;
+  margin: 0;
+}
+.immersive-entry button {
+  white-space: nowrap;
+}
+.panorama-dialog {
+  width: min(1150px, calc(100% - 24px));
+  padding: 28px;
+}
+.panorama-heading h2 {
+  font-size: 40px;
+}
+.panorama-heading p {
+  font-size: 13px;
+}
+.panorama-window {
+  width: 100%;
+  height: clamp(250px, 48vh, 480px);
+  overflow-x: auto;
+  overflow-y: hidden;
+  cursor: grab;
+  background: #153849;
+  overscroll-behavior-x: contain;
+  touch-action: pan-x pan-y;
+  scrollbar-width: thin;
+  scrollbar-color: #8eaaa9 #153849;
+}
+.panorama-window:active {
+  cursor: grabbing;
+}
+.panorama-window img {
+  display: block;
+  height: 100%;
+  width: auto;
+  max-width: none;
+  user-select: none;
+}
+.panorama-controls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 14px 0;
+}
+.panorama-controls span {
+  min-width: 130px;
+  text-align: center;
+}
+.panorama-controls button {
+  padding: 8px 15px;
+}
+.panorama-dialog > .close {
+  position: sticky;
+  top: 0;
+  background: var(--paper);
+  z-index: 2;
+}
+@media (max-width: 760px) {
+  .immersive-entry {
+    display: block;
+    padding: 30px 0;
+  }
+  .immersive-entry h2 {
+    font-size: 32px;
+  }
+  .immersive-entry button {
+    margin-top: 20px;
+  }
+  .panorama-dialog {
+    padding: 20px;
+  }
+  .panorama-heading h2 {
+    font-size: 33px;
+  }
+  .panorama-window {
+    height: 340px;
+  }
+}
