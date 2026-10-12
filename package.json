@@ -1,1 +1,13 @@
-{"name":"kunjan-nye","private":true,"type":"module","engines":{"node":">=24.15"},"scripts":{"start":"node server.mjs","dev":"PREVIEW=1 node server.mjs","test":"node --test"}}
+{
+  "name": "kunjan-nye",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24.15"
+  },
+  "scripts": {
+    "start": "node server.mjs",
+    "dev": "PREVIEW=1 node server.mjs",
+    "test": "node --test"
+  }
+}
